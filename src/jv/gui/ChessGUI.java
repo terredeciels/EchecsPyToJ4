@@ -317,7 +317,7 @@ public class ChessGUI implements ActionListener {
             return;
         }
         // Display the chess board
-        board.render();
+        board.renderBoard();
 
         // Check if game is over
         engine.print_result(board);

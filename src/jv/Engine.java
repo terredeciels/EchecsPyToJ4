@@ -46,28 +46,6 @@ public class Engine {
 
     public void perft(int depth, Board b) {
 
-//        """PERFformance Test :
-//        This is a debugging function through the move generation tree
-//        for the current board until depth [x].
-//        'c' is the command line written by user : perft [x]
-//        """
-
-        // Checking the requested depth
-        // cmd = c.split()
-        // cmd[0]='perft'
-//
-//        try:
-//            d = int(cmd[1])
-//        except ValueError:
-//            print('Please type an integer as depth i.e. : perft 5')
-//            return
-
-//        if (d < 1 or d > self.MAX_PLY):
-//            print('Depth must be between 1 and', self.MAX_PLY)
-//            return
-
-        // System.out.print("Depth\tNodes\tCaptures\tE.p.\tCastles\tPromotions\tChecks\tCheckmates");
-
         //time1 = get_ms();
         for (int i = 2; i <= depth + 1; i++) {
             int total = perftoption(0, i - 1, b);
@@ -81,39 +59,25 @@ public class Engine {
 
     private int perftoption(int prof, int limit, Board b) {
         int cpt = 0;
-
         if (prof > limit) return 0;
-
         ArrayList<Move> L = b.gen_moves_list("", false);
-
         for (Move m : L) {
             if (!b.domove(m.pos1, m.pos2, m.s))
                 continue;
-
             cpt += perftoption(prof + 1, limit, b);
-
             if (limit == prof)
                 cpt += 1;
-
             b.undomove();
         }
         return cpt;
     }
 
     public void undomove(Board b) {
-        // "The user requested a 'undomove' in command line"
-
         b.undomove();
         endgame = false;
     }
 
     public void usermove(Board b, String c, String depart, String arrivee) {
-
-//
-//        """Move a piece for the side to move, asked in command line.
-//        The command 'c' in argument is like 'e2e4' or 'b7b8q'.
-//        Argument 'b' is the chessboard.
-//        """
 
         if (endgame) {
             print_result(b);
@@ -149,8 +113,7 @@ public class Engine {
                     break;
             }
         }
-        // Generate moves list to check
-        // if the given move (pos1,pos2,promote) is correct
+
         ArrayList<Move> mList = b.gen_moves_list("", false);
 
         // The move is not in list ? or let the king in check ?
@@ -181,8 +144,6 @@ public class Engine {
 
     public void print_result(Board b) {
 
-        //  "Check if the game is over and print the result"
-
         // Is there at least one legal move left ?
         boolean f = false;
 
@@ -212,11 +173,6 @@ public class Engine {
     }
 
     private String chkCmd(String c) {
-//      """Check if the command 'c' typed by user is like a move,
-//        i.e. 'e2e4','b7b8n'...
-//        Returns '' if correct.
-//        Returns a string error if not.
-//        """
 
         String[] err = {
                 "The move must be 4 or 5 letters : e2e4, b1c3, e7e8q...", "Incorrect move."};
@@ -242,45 +198,15 @@ public class Engine {
         return "";
 
     }
-//
-//    public void setboard(Board b, String c) {
-////        """Set the chessboard to the FEN position given by user with
-////        the command line 'setboard ...'.
-////        'c' in argument is for example :
-////        'setboard 8/5k2/5P2/8/8/5K2/8/8 w - - 0 0'
-////        """
-//
-//        String[] cmd = c.split(" "); //  # split command with spaces
-//        cmd.pop(0); //  # drop the word 'setboard' written by user
-//
-//
-//
-//        // set the FEN position on board
-//        if (b.setboard(' '.join(cmd)))
-//        endgame = false; //  # success, so no endgame
-//    }
-
-//    int get_ms() {
-//        return  round(time.time() * 1000);
-//    }
-
 
     public void clear_pv() {
-
-        //    "Clear the triangular PV table containing best moves lines"
-        // pv = [[0 for x in range(self.MAX_PLY)] for x in range(self.MAX_PLY)]
-
         for (int x = 0; x < MAX_PLY; x++)
             for (int y = 0; y < MAX_PLY; y++)
                 pv[x][y] = null;
     }
 
 
-    void search(Board b) {
-
-//        """Search the best move for the side to move,
-//        according to the given chessboard 'b'
-//        """
+    private void search(Board b) {
 
         if (endgame) {
             print_result(b);
@@ -293,13 +219,9 @@ public class Engine {
         nodes = 0;
         b.ply = 0;
 
-        // System.out.print("ply\tnodes\tscore\tpv");
-
         for (int i = 1; i < init_depth + 1; i++) {
 
             double score = alphabeta(i, -INFINITY, INFINITY, b);
-
-            //print("{}\t{}\t{}\t".format(i, self.nodes, score / 10), end='')
             System.out.print(i + "  " + nodes + "  " + score / 10 + "  ");
             // print PV informations : ply, nodes...
             int j = 0;
@@ -307,13 +229,11 @@ public class Engine {
                 Move c = pv[j][j];
                 String pos1 = b.caseInt2Str(c.pos1);
                 String pos2 = b.caseInt2Str(c.pos2);
-                //print("{}{}{}".format(pos1, pos2, c[2]), end=' ')
                 System.out.print(pos1 + "" + pos2 + c.s + " ");
                 j += 1;
             }
 
             System.out.println();
-
             // Break if MAT is found
             if (score > INFINITY - 100 || score < -INFINITY + 100)
                 break;
@@ -354,18 +274,11 @@ public class Engine {
         boolean f = false;  // flag to know if at least one move will be done
         //for i, m in enumerate(mList)
         for (Move m : mList) {
-            //Do the move 'm'.
-            // If it lets king in check, undo it and ignore it
-            // remind : a move is defined with (pos1,pos2,promote)
-            // i.e. : 'e7e8q' is (12,4,'q')
             if (!b.domove(m.pos1, m.pos2, m.s))
                 continue;
-
             f = true;  // a move has passed
-
             double score = -alphabeta(depth - 1, -beta, -alpha, b);
 
-            // Unmake move
             b.undomove();
 
             if (score > alpha) {

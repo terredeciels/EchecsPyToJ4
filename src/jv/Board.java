@@ -144,30 +144,6 @@ public class Board {
 
     public boolean domove(int depart, int arrivee, String promote) {
 
-//        """Move a piece on the board from the square numbers
-//        "depart" to "arrivee" (0..63) respecting rules :
-//        - prise en passant
-//        - promote and under-promote
-//        - castle rights
-//        Returns :
-//        - TRUE if the move do not let king in check
-//        - FALSE otherwise and undomove is done.
-//        """
-
-//        # Debugging tests
-//        #if(self.cases[depart].isEmpty()):
-//        #    print("domove() ERROR : asked for an empty square move : ",depart,arrivee,promote)
-//        #    return
-//        #if(int(depart)<0 or int(depart)>63):
-//        #    print("domove() ERROR : incorrect FROM square number : ",depart)
-//        #    return
-//        #if(int(arrivee)<0 or int(arrivee)>63):
-//        #    print("domove() ERROR : incorrect TO square number : ",arrivee)
-//        #    return
-//        #if(not(promote=="" or promote=="q" or promote=="r" or promote=="n" or promote=="b")):
-//        #    print("domove() ERROR : incorrect promote : ",promote)
-//        #    return
-
         // Informations to save in the history moves
         Piece pieceDeplacee = cases[depart]; // moved piece
         Piece piecePrise = cases[arrivee]; // taken piece, can be null : Piece()
@@ -328,11 +304,7 @@ public class Board {
     }
 
     boolean in_check(String couleur) {
-        //  """Returns TRUE or FALSE
-        // if the KING of the given "color" is in check"""
 
-        // Looking for the id square where is the king
-        // sure, we can code better to avoid this and win kn/s...
         int pos = 0;// ??
         for (int i = 0; i < 64; i++) {
             if (cases[i].nom.equals("ROI") && cases[i].couleur.equals(couleur)) {
@@ -351,17 +323,11 @@ public class Board {
             return;
         }
 
-        // The last move in history is : self.historique[-1]
-//        MoveHistory(int depart, int arrivee, Piece pieceDeplacee, Piece piecePrise,
-//        boolean isEp, int histEp, String promote,
-//        boolean hist_roque_56, boolean hist_roque_63, boolean hist_roque_0, boolean hist_roque_7)
         MoveHistory lastmove = history.get(history.size() - 1); // ??
 
         int pos1 = lastmove.getDepart();
         int pos2 = lastmove.getArrivee();
-
         // ?? Piece piece_deplacee = lastmove.getPieceDeplacee();
-
         Piece piece_prise = lastmove.getPiecePrise();
         boolean isEp = lastmove.isEp();
         int ep = lastmove.getHistEp();
@@ -438,16 +404,9 @@ public class Board {
     }
 
     public String caseInt2Str(int i) {
-//        """Given in argument : an integer between 0 and 63
-//        Returns a string like "e2""""
 
         String err =
                 "Square number must be in 0 to 63";
-
-//        char letters;
-//        letters=("a","b","c","d","e","f","g","h";
-//        char numbers;
-//        numbers=("1","2","3","4","5","6","7","8");
 
         if (i < 0 || i > 63)
             System.out.println(err);
@@ -457,8 +416,6 @@ public class Board {
     }
 
     int caseStr2Int(String c) {
-//        """'c' given in argument is a square name like 'e2'
-//        "This functino returns a square number like 52"""
 
         String[] err = {
                 "The square name must be 2 caracters i.e. e2,e4,b1...",
@@ -485,9 +442,6 @@ public class Board {
 
     int evaluer() {
 
-//        """A wonderful evaluate() function
-//        returning actually only the material score"""
-
         int WhiteScore = 0;
         int BlackScore = 0;
 
@@ -511,50 +465,23 @@ public class Board {
 
     }
 
-    public void render() {
-        // System.out.println("Side to move : " + side2move);
-        showHistory();
-    }
-
     public void renderBoard() {
-
-        // "Display the chessboard in console mode"
-
-        // input("\nType a key to continue...")
-        // os.system('cls' if os.name == 'nt' else 'clear')
-
-//         print('')
-//         print('=> Commands are :')
-//         print('- "new" for a new game')
-//         print('- "e2e4" for example, to move a piece')
-//         print('- "e7e8q" for a promote move to queen ("r" for rook, "n" for knight, "b" for bishop)')
-//         print('- "legalmoves" show legal moves for side to move')
-//         print('- "undomove" to cancel the last move')
-//         print('- "go" asks the engine to play now')
-//         print('- "setboard [fen]" to set the board as the FEN notation given')
-//         print('- "getboard" to export the current FEN board position')
-//         print('- "sd [x]" to set the depth search')
-//         print('- "perft [x]" : test the move generator (x = search depth)')
-//         print('- "quit"... to quit')
-//         print('')
 
         System.out.print("8 ");
         int i = 1;
         int y = 7;
         for (Piece piece : cases) {
             if (piece.couleur.equals("noir"))
-                System.out.print(Character.toLowerCase(piece.nom.charAt(0))+ " ");
+                System.out.print(Character.toLowerCase(piece.nom.charAt(0)) + " ");
             else
-                System.out.print(piece.nom.charAt(0)+" ");
+                System.out.print(piece.nom.charAt(0) + " ");
 
             if (i % 8 == 0) {
                 System.out.println();
-                //System.out.println();
-
-            if (y > 0) {
-                System.out.print(y+ " ");
-                y = y - 1;
-            }
+                if (y > 0) {
+                    System.out.print(y + " ");
+                    y = y - 1;
+                }
             }
             i += 1;
         }
@@ -586,40 +513,23 @@ public class Board {
             System.out.print("-");
             System.out.println();
         }
-
+System.out.println();
         //Displaying moves done from the history
         showHistory();
     }
 
     private void showHistory() {
 
-        // "Displays the history of the moves played"
-
         if (history.size() == 0)
             return;
-
-        //System.out.println();
-        //cpt, aff = 1.0, True
-//        for (depart, \
-//    arrivee, \
-//    pieceDeplacee, \
-//    piecePrise, \
-//    isEp, \
-//    histEp, \
-//    promote, \
-//    roque56, \
-//    roque63, \
-//    roque0, \
-//    roque7) in self.history:
         String a, b;
-        // ??  double cpt = 0.0;
-        // ??  boolean aff = false;
         for (MoveHistory h : history) {
             final int depart = h.getDepart();
             a = caseInt2Str(depart);
             final int arrivee = h.getArrivee();
             b = caseInt2Str(arrivee);
             System.out.print(" " + a + b);
+
 //            if (!piecePrise.isEmpty())
 //                a = a + "x";
 //            if (!h.getPromote().equals(""))
@@ -637,7 +547,6 @@ public class Board {
         }
 
         System.out.println();
-        //System.out.println();
     }
 }
 

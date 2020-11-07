@@ -5,22 +5,11 @@ import jv.move.Move;
 import java.util.ArrayList;
 
 public class Piece {
-    // "Chess set class"
-
     private final String VIDE = "."; // empty piece name (=empty square '.' in console)
-
-    // Name of the pieces
-    // ??  String[] nomPiece = {VIDE, "ROI", "DAME", "TOUR", "CAVALIER", "FOU", "PION"};
-
-    // Give a score value for each piece : KING=0, QUEEN=9, ROOK=5...
-    // int[] valeurPiece = {0, 0, 9, 5, 3, 3, 1};
     String nom;
     String couleur;
     int valeur;
-    // For the pieces moves, using method "mail box" from Robert Hyatt
-    // It helps to know if a piece is not moved outside the board !
     private int[] tab120 =
-
             {
                     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
                     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
@@ -53,16 +42,8 @@ public class Piece {
     private int[] deplacements_roi_dame = {-10, 10, -1, 1, -11, -9, 11, 9};
 
     Piece(String nomStr, String couleurStr) {
-
-//       """Creating a piece object, with its attributes :
-//        - 'nom' as name (ROI, DAME...);
-//        - 'couleur' as color (blanc,noir);
-//        - 'valeur' as its value"""
-
         nom = nomStr;
         couleur = couleurStr;
-        //valeur = valeurPiece[nomPiece.index(nomStr)];
-        // int[] valeurPiece={0,0,9,5,3,3,1};
         switch (nomStr) {
             case VIDE:
             case "ROI":
@@ -92,14 +73,6 @@ public class Piece {
     }
 
     ArrayList<Move> pos2_roi(int pos1, String cAd, Board echiquier, boolean dontCallIsAttacked) {
-
-//        """Returns the list of moves for the king :
-//        - which is at square 'pos1'
-//        - which opponent color is 'cAd' (blanc,noir)
-//        - dontCallIsAttacked is set to avoid recursives calls
-//        between is_attacked() and gen_moves_list().
-//        """
-
         ArrayList<Move> liste = new ArrayList<>();
 
         for (int i : deplacements_roi_dame) {
@@ -113,15 +86,9 @@ public class Piece {
         // The current side to move is the opposite of cAd
         String c = echiquier.oppColor(cAd);
 
-
         // Castle moves
         if (c.equals("blanc")) {
             if (echiquier.white_can_castle_63) {
-//                #If a rook is at square 63
-//                #And if squares between KING and ROOK are empty
-//                #And if squares on which KING walks are not attacked
-//                #And if KING is not in check
-//                #Then we can add this castle move
                 if (echiquier.cases[63].nom.equals("TOUR") &&
                         echiquier.cases[63].couleur.equals("blanc") &&
                         echiquier.cases[61].isEmpty() &&
@@ -167,17 +134,10 @@ public class Piece {
                 }
             }
         }
-
-
         return liste;
     }
 
     ArrayList<Move> pos2_tour(int pos1, String cAd, Board echiquier) {
-
-//        """Returns the list of moves for a ROOK :
-//        - at square number 'pos1' (0 to 63)
-//        - opponent color is cAd (blanc,noir)"""
-
         ArrayList<Move> liste = new ArrayList<>();
 
         for (int k : deplacements_tour) {
@@ -197,11 +157,6 @@ public class Piece {
     }
 
     ArrayList<Move> pos2_cavalier(int pos1, String cAd, Board echiquier) {
-
-//        """Returns the list of moves for a KNIGHT :
-//        - at square number 'pos1' (0 to 63)
-//        - opponent color is cAd (blanc,noir)"""
-
         ArrayList<Move> liste = new ArrayList<>();
 
         for (int i : deplacements_cavalier) {
@@ -215,11 +170,6 @@ public class Piece {
     }
 
     ArrayList<Move> pos2_fou(int pos1, String cAd, Board echiquier) {
-
-//        """Returns the list of moves for a BISHOP :
-//        - at square number 'pos1' (0 to 63)
-//        - opponent color is cAd (blanc,noir)"""
-
         ArrayList<Move> liste = new ArrayList<>();
 
         for (int k : deplacements_fou) {
@@ -240,11 +190,6 @@ public class Piece {
 
 
     ArrayList<Move> pos2_pion(int pos1, String couleur, Board echiquier) {
-
-//        """Returns the list of moves for a PAWN :
-//        - at square number 'pos1' (0 to 63)
-//        - opponent color is cAd (blanc,noir)"""
-
         ArrayList<Move> liste = new ArrayList<>();
 
         // White PAWN ---------------------------------------------------
@@ -354,9 +299,6 @@ public class Piece {
     }
 
     private boolean isEmpty() {
-//        """Returns TRUE or FALSE if this piece object is defined,
-//        As any square on board can have a piece on it, or not,
-//        we can set a null piece on a square."""
         return nom.equals(VIDE);
     }
 
